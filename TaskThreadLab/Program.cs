@@ -20,7 +20,8 @@ namespace TaskThreadLab
             //test3();
             //test4();
             //test5();
-            test6();
+            // test6();
+            test7();
             Console.ReadLine();
         }
 
@@ -173,6 +174,25 @@ namespace TaskThreadLab
                 Thread.Sleep(2000);
                 cts.Cancel();
             }
+        }
+
+        /// <summary>
+        /// 等待迴圈工作完成
+        /// </summary>
+        async static void test7()
+        {
+            List<Task> tasks = new List<Task>();
+            var action = new Action<object>((index) =>
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine("Done:" + index);
+            });
+            for (int i = 0; i < 2000; i++)
+            {
+                tasks.Add(Task.Factory.StartNew(action, i));
+            }
+            Task.WaitAll(tasks.ToArray());
+            Console.WriteLine("Async Run...");
         }
     }
 }
